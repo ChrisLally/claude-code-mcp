@@ -2,7 +2,7 @@
   "dxt_version": "0.1",
   "name": "claude-code",
   "display_name": "Claude Code MCP Integration",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Claude Code CLI integration via MCP - provides access to Claude Code's powerful development tools",
   "long_description": "A comprehensive MCP server that wraps Claude Code CLI functionality, enabling other AI systems to interact with Claude Code through standardized MCP tools. This extension provides three core capabilities: `claude_ask` for full tool access conversations, `claude_plan` for read-only planning assistance, and `claude_resume` for continuing previous sessions. Perfect for integrating Claude Code's powerful development capabilities into other AI workflows and applications.",
   "author": {
