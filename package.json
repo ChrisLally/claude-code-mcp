@@ -1,0 +1,38 @@
+{
+  "name": "claude-code-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that wraps Claude Code CLI functionality",
+  "type": "module",
+  "main": "server/index.js",
+  "bin": {
+    "claude-code-mcp": "./server/index.js"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --inspect server/index.js",
+    "build-extension": "npm run build:clean && npm run build:package",
+    "build:clean": "rm -rf dist && mkdir -p dist",
+    "build:package": "node -e \"const fs=require('fs');const path=require('path');const archiver=require('archiver');const output=fs.createWriteStream('dist/claude-code.dxt');const archive=archiver('zip');output.on('close',()=>console.log('Extension built: dist/claude-code.dxt'));archive.on('error',(err)=>{throw err;});archive.pipe(output);archive.file('manifest.json',{name:'manifest.json'});archive.directory('server/',false);archive.file('package.json',{name:'package.json'});archive.file('README.md',{name:'README.md'});archive.finalize();\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "cli",
+    "ai",
+    "assistant"
+  ],
+  "author": {
+    "name": "Christopher Lally",
+    "url": "https://christopherlally.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
