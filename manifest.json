@@ -2,7 +2,7 @@
   "dxt_version": "0.1",
   "name": "claude-code",
   "display_name": "Claude Code MCP Integration",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code CLI integration via MCP - provides access to Claude Code's powerful development tools",
   "long_description": "A comprehensive MCP server that wraps Claude Code CLI functionality, enabling other AI systems to interact with Claude Code through standardized MCP tools. This extension provides three core capabilities: `claude_ask` for full tool access conversations, `claude_plan` for read-only planning assistance, and `claude_resume` for continuing previous sessions. Perfect for integrating Claude Code's powerful development capabilities into other AI workflows and applications.",
   "author": {
@@ -22,7 +22,9 @@
     "entry_point": "server/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/server/index.js"],
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
       "env": {
         "NODE_ENV": "production",
         "DEFAULT_WORKING_DIRECTORY": "${user_config.defaultWorkingDirectory}",
@@ -36,7 +38,7 @@
       "description": "Ask Claude Code CLI a question or request with full tool access. Supports session management, custom working directories, and tool permissions."
     },
     {
-      "name": "claude_plan", 
+      "name": "claude_plan",
       "description": "Ask Claude Code CLI to create a plan using read-only mode with planning tools. Perfect for analyzing codebases and creating implementation strategies."
     },
     {
@@ -48,7 +50,7 @@
   "keywords": [
     "claude-code",
     "mcp",
-    "cli", 
+    "cli",
     "development",
     "ai-assistant",
     "coding",
@@ -57,7 +59,11 @@
   ],
   "compatibility": {
     "claude_desktop": ">=1.0.0",
-    "platforms": ["darwin", "win32", "linux"],
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
     "runtimes": {
       "node": ">=18.0.0"
     }
@@ -71,14 +77,11 @@
       "default": ""
     },
     "defaultAllowedTools": {
-      "type": "array",
+      "type": "string",
       "title": "Default Allowed Tools",
-      "description": "Default set of tools Claude Code can use. Leave empty to allow all tools. Common tools include: Read, Write, Edit, Bash, Glob, Grep, Task, etc.",
-      "items": {
-        "type": "string"
-      },
+      "description": "Comma-separated list of tools Claude Code can use (e.g., Read,Write,Bash). Leave empty to allow all tools.",
       "required": false,
-      "default": []
+      "default": ""
     }
   }
 }
