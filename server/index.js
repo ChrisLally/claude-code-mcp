@@ -97,7 +97,7 @@ class MockWebSocket {
   constructor() {
     this.responses = [];
   }
-  
+
   send(data) {
     try {
       const parsed = JSON.parse(data);
@@ -106,11 +106,11 @@ class MockWebSocket {
       this.responses.push({ type: 'raw', data });
     }
   }
-  
+
   getResponses() {
     return this.responses;
   }
-  
+
   clear() {
     this.responses = [];
   }
@@ -122,25 +122,29 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
-  
+
+  const defaultTools = process.env.DEFAULT_ALLOWED_TOOLS
+    ? process.env.DEFAULT_ALLOWED_TOOLS.split(',').map(t => t.trim()).filter(t => t)
+    : [];
+
   try {
     let options = {
-      cwd: args.workingDirectory || process.cwd(),
+      cwd: args.workingDirectory || process.env.DEFAULT_WORKING_DIRECTORY || process.cwd(),
     };
-    
+
     const mockWs = new MockWebSocket();
-    
+
     switch (name) {
       case 'claude_ask':
         options.sessionId = args.sessionId;
         options.resume = !!args.sessionId;
         options.toolsSettings = {
-          allowedTools: args.allowedTools || [],
+          allowedTools: args.allowedTools || defaultTools,
           disallowedTools: [],
           skipPermissions: false,
         };
         break;
-        
+
       case 'claude_plan':
         options.sessionId = args.sessionId;
         options.resume = !!args.sessionId;
@@ -151,7 +155,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           skipPermissions: false,
         };
         break;
-        
+
       case 'claude_resume':
         if (!args.sessionId) {
           throw new Error('Session ID is required for resume operation');
@@ -159,14 +163,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         options.sessionId = args.sessionId;
         options.resume = true;
         break;
-        
+
       default:
         throw new Error(`Unknown tool: ${name}`);
     }
-    
+
     // Execute Claude CLI
     await spawnClaude(args.query || '', options, mockWs);
-    
+
     // Collect and format responses
     const responses = mockWs.getResponses();
     const output = responses
@@ -178,12 +182,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return JSON.stringify(r.data);
       })
       .join('\n');
-    
+
     const sessionId = responses
       .find(r => r.type === 'session-created')?.sessionId ||
       responses
         .find(r => r.type === 'claude-response' && r.data?.session_id)?.data.session_id;
-    
+
     return {
       content: [
         {
@@ -194,7 +198,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       isError: false,
       ...(sessionId && { metadata: { sessionId } }),
     };
-    
+
   } catch (error) {
     return {
       content: [
