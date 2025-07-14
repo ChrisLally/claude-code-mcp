@@ -10,15 +10,13 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --inspect server/index.js",
-    "build-extension": "npm run build:clean && npm run build:package",
-    "build:clean": "rm -rf dist && mkdir -p dist",
-    "build:package": "node -e \"const fs=require('fs');const path=require('path');const archiver=require('archiver');const output=fs.createWriteStream('dist/claude-code.dxt');const archive=archiver('zip');output.on('close',()=>console.log('Extension built: dist/claude-code.dxt'));archive.on('error',(err)=>{throw err;});archive.pipe(output);archive.file('manifest.json',{name:'manifest.json'});archive.file('icon.png',{name:'icon.png'});archive.directory('server/', 'server');archive.directory('node_modules/', 'node_modules');archive.file('package.json',{name:'package.json'});archive.file('README.md',{name:'README.md'});archive.finalize();\""
+    "build": "dxt pack"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.5.0"
   },
   "devDependencies": {
-    "archiver": "^7.0.0"
+    "@anthropic-ai/dxt": "^0.2.5"
   },
   "keywords": [
     "mcp",
