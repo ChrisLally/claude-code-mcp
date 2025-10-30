@@ -1,0 +1,66 @@
+{
+    "name": "claude-code-mcp",
+    "version": "2.0.0",
+    "description": "Modern Claude Code CLI integration via MCP with TypeScript, OAuth 2.1, and remote transport support",
+    "type": "module",
+    "main": "build/server/index.js",
+    "bin": {
+        "claude-code-mcp": "build/server/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsx watch server/index.ts",
+        "start": "node build/server/index.js",
+        "start:stdio": "NODE_ENV=production TRANSPORT=stdio node build/server/index.js",
+        "start:http": "NODE_ENV=production TRANSPORT=http node build/server/index.js",
+        "type-check": "tsc --noEmit",
+        "lint": "eslint server --ext .ts",
+        "clean": "rm -rf build",
+        "build:extension": "npm run build && npm run package:extension",
+        "package:extension": "node scripts/package-extension.js"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.10.0",
+        "express": "^4.19.2",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.14.0",
+        "@typescript-eslint/eslint-plugin": "^7.13.0",
+        "@typescript-eslint/parser": "^7.13.0",
+        "eslint": "^8.57.0",
+        "tsx": "^4.15.0",
+        "typescript": "^5.4.5"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "keywords": [
+        "claude-code",
+        "mcp",
+        "model-context-protocol",
+        "cli",
+        "development",
+        "ai-assistant",
+        "coding",
+        "automation",
+        "oauth",
+        "typescript",
+        "subagents",
+        "hooks",
+        "checkpoints"
+    ],
+    "author": {
+        "name": "Christopher Lally",
+        "url": "https://github.com/ChrisLally"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ChrisLally/claude-code-mcp"
+    },
+    "bugs": {
+        "url": "https://github.com/ChrisLally/claude-code-mcp/issues"
+    }
+}

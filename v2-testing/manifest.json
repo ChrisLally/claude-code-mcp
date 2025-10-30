@@ -1,0 +1,168 @@
+{
+    "dxt_version": "0.1",
+    "name": "claude-code",
+    "display_name": "Claude Code MCP Server",
+    "version": "2.0.0",
+    "description": "Modern Claude Code CLI integration with TypeScript, OAuth 2.1, subagents, hooks, and checkpoints",
+    "long_description": "A production-ready MCP server that wraps Claude Code CLI functionality with full TypeScript support, OAuth 2.1 authentication, remote transport (Streamable HTTP), and all modern Claude Code features including subagents, hooks, checkpoints, and extended thinking modes. Supports both local (stdio) and remote (HTTP) deployment with comprehensive security and session management.",
+    "author": {
+        "name": "Christopher Lally",
+        "url": "https://github.com/ChrisLally"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ChrisLally/claude-code-mcp"
+    },
+    "homepage": "https://github.com/ChrisLally/claude-code-mcp",
+    "documentation": "https://github.com/ChrisLally/claude-code-mcp#readme",
+    "support": "https://github.com/ChrisLally/claude-code-mcp/issues",
+    "icon": "icon.png",
+    "license": "MIT",
+    "server": {
+        "type": "node",
+        "entry_point": "build/server/index.js",
+        "mcp_config": {
+            "command": "node",
+            "args": [
+                "${__dirname}/build/server/index.js"
+            ],
+            "env": {
+                "NODE_ENV": "production",
+                "TRANSPORT": "stdio",
+                "DEFAULT_WORKING_DIRECTORY": "${user_config.defaultWorkingDirectory}",
+                "DEFAULT_ALLOWED_TOOLS": "${user_config.defaultAllowedTools}",
+                "LOG_LEVEL": "${user_config.logLevel}"
+            }
+        }
+    },
+    "tools": [
+        {
+            "name": "claude_ask",
+            "description": "Ask Claude Code CLI a question with full tool access, subagent delegation, hooks, and extended thinking modes",
+            "annotations": {
+                "title": "Claude Code Ask",
+                "openWorldHint": true
+            }
+        },
+        {
+            "name": "claude_plan",
+            "description": "Create implementation plans using read-only mode with planning tools (Read, Task, TodoRead, TodoWrite)",
+            "annotations": {
+                "title": "Claude Code Plan Mode",
+                "readOnlyHint": true,
+                "openWorldHint": true
+            }
+        },
+        {
+            "name": "claude_resume",
+            "description": "Resume previous Claude Code sessions with full context preservation",
+            "annotations": {
+                "title": "Claude Code Resume",
+                "openWorldHint": true
+            }
+        },
+        {
+            "name": "claude_checkpoint",
+            "description": "Manage checkpoints: create snapshots, list available checkpoints, or restore to previous states",
+            "annotations": {
+                "title": "Claude Code Checkpoints"
+            }
+        },
+        {
+            "name": "claude_subagent_list",
+            "description": "List all available Claude Code subagents (project-level and user-level)",
+            "annotations": {
+                "title": "List Subagents",
+                "readOnlyHint": true
+            }
+        }
+    ],
+    "tools_generated": true,
+    "keywords": [
+        "claude-code",
+        "mcp",
+        "typescript",
+        "cli",
+        "development",
+        "ai-assistant",
+        "coding",
+        "automation",
+        "productivity",
+        "subagents",
+        "hooks",
+        "checkpoints",
+        "oauth",
+        "remote-transport"
+    ],
+    "compatibility": {
+        "platforms": [
+            "darwin",
+            "win32",
+            "linux"
+        ],
+        "runtimes": {
+            "node": ">=18.0.0"
+        },
+        "mcp_versions": [
+            "2025-03-26",
+            "2025-06-18"
+        ]
+    },
+    "user_config": {
+        "defaultWorkingDirectory": {
+            "type": "directory",
+            "title": "Default Working Directory",
+            "description": "Default directory for Claude Code operations. If not specified, uses the current working directory.",
+            "required": false,
+            "default": ""
+        },
+        "defaultAllowedTools": {
+            "type": "string",
+            "title": "Default Allowed Tools",
+            "description": "Comma-separated list of tools Claude Code can use (e.g., Read,Write,Bash,Edit,Grep). Leave empty to allow all tools.",
+            "required": false,
+            "default": ""
+        },
+        "logLevel": {
+            "type": "string",
+            "title": "Log Level",
+            "description": "Logging verbosity level",
+            "required": false,
+            "default": "info",
+            "enum": [
+                "debug",
+                "info",
+                "warn",
+                "error"
+            ]
+        }
+    },
+    "changelog": {
+        "2.0.0": {
+            "date": "2025-10-30",
+            "changes": [
+                "Complete rewrite in TypeScript for type safety",
+                "Added remote transport support (Streamable HTTP per MCP spec 2025-03-26)",
+                "Implemented OAuth 2.1 with PKCE and Resource Indicators (RFC 8707)",
+                "Added support for Claude Code subagents",
+                "Added support for hooks (pre-tool-use, session-start, etc.)",
+                "Added checkpoint management (create, list, restore)",
+                "Added extended thinking modes (think, think-harder, ultrathink)",
+                "Improved session management with automatic cleanup",
+                "Added structured logging with configurable levels",
+                "Added comprehensive error handling",
+                "Updated tool annotations per MCP spec 2025-03-26",
+                "Added OAuth discovery endpoints (/.well-known/*)",
+                "Improved security with token audience binding"
+            ]
+        },
+        "1.0.4": {
+            "date": "2024-XX-XX",
+            "changes": [
+                "Initial JavaScript implementation",
+                "Basic stdio transport",
+                "claude_ask, claude_plan, claude_resume tools"
+            ]
+        }
+    }
+}
